@@ -121,7 +121,7 @@ textarea {
 }
 
 .back {
-  background: yellow;
+
   transform: rotateY(180deg);
 }
 
