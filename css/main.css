@@ -88,12 +88,6 @@ textarea {
    ========================================================================== */
 
 .scene {
-<<<<<<< HEAD
-  height: 6em;
-  /* border: 1px solid #CCC;
-  margin: 40px 0; */
-=======
->>>>>>> 3bbda8a9b882096cd67917331c31fc83d72418a0
   perspective: 600px;
 }
 
@@ -114,14 +108,6 @@ textarea {
   position: absolute;
   width: 100%;
   height: 100%;
-<<<<<<< HEAD
-  line-height: 260px;
-  color: white;
-  text-align: center;
-  font-weight: bold;
-  font-size: 40px;
-=======
->>>>>>> 3bbda8a9b882096cd67917331c31fc83d72418a0
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
@@ -129,37 +115,6 @@ textarea {
 .front {
   background: blue;
   background-image: url("../img/Ada Lovelace.png");
-<<<<<<< HEAD
-}
-
-.back {
-  background: yellow;
-  transform: rotateY(180deg);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/************** Extra small  ::  viewports >= 768 *************/
-@media screen and (min-width: 768px){
-  .cardSize {
-=======
   background-repeat: no-repeat;
   background-position: center;
   background-size:contain;
@@ -178,31 +133,17 @@ textarea {
 /************** Small  ::  viewports >= 768 ************************/
 @media screen and (min-width: 768px){
   .cardHeight {
->>>>>>> 3bbda8a9b882096cd67917331c31fc83d72418a0
     height: 12em;
   }  
 }
 
-<<<<<<< HEAD
-/************** Extra small  ::  viewports >= 992 *************/
-@media screen and (min-width: 992px){
-  .cardSize {
-=======
 /************** Medium and Large  ::  viewports >= 992 *************/
 @media screen and (min-width: 992px){
   .cardHeight {
->>>>>>> 3bbda8a9b882096cd67917331c31fc83d72418a0
     height: 14em;
   }  
 }
 
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> 3bbda8a9b882096cd67917331c31fc83d72418a0
 /* ==========================================================================
    Helper classes
    ========================================================================== */
