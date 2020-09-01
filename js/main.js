@@ -1,5 +1,12 @@
 console.log("loaded");
 
+<<<<<<< HEAD
+let cards = document.getElementsByClassName("card");
+
+for (let card of cards){
+    card.addEventListener( 'click', function() {
+        card.classList.toggle('is-flipped');
+=======
 // 
 let items = ["red", "yellow", "green", "pink", "violet", "brown"];
 
@@ -71,5 +78,6 @@ for (let card of cards){
         //console.log(status);
 
         // console.log(card.style.background);
+>>>>>>> 3bbda8a9b882096cd67917331c31fc83d72418a0
     });    
 }
