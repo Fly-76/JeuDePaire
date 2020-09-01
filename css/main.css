@@ -87,6 +87,86 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+.scene {
+  height: 6em;
+  /* border: 1px solid #CCC;
+  margin: 40px 0; */
+  perspective: 600px;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  position: relative;
+}
+
+.card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  line-height: 260px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 40px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.front {
+  background: blue;
+  background-image: url("../img/Ada Lovelace.png");
+}
+
+.back {
+  background: yellow;
+  transform: rotateY(180deg);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/************** Extra small  ::  viewports >= 768 *************/
+@media screen and (min-width: 768px){
+  .cardSize {
+    height: 12em;
+  }  
+}
+
+/************** Extra small  ::  viewports >= 992 *************/
+@media screen and (min-width: 992px){
+  .cardSize {
+    height: 14em;
+  }  
+}
+
+
+
+
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */
