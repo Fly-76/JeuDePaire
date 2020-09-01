@@ -1,9 +1,8 @@
-console.log("loaded");
-
-// 
+/********************************************************************************/
+// Define possible choices
 let items = ["red", "yellow", "green", "pink", "violet", "brown"];
 
-// Randomize data order
+// Randomize data order of the given array
 function randomize(array) {
     let i, j, swap;
     for (i = array.length - 1; i > 0; i--) {
@@ -14,7 +13,8 @@ function randomize(array) {
     }
 }
 
-// Build an empty arrea with pair index
+// Build an empty arrea with pair index 0, 0, 1, 1, 2, 2, etc...
+// then randomize it
 function buildArray() {
     let data = new Array;
     for (let i=0; i<items.length; i++) data.push(i, i);
@@ -25,51 +25,76 @@ function buildArray() {
 let randItems = buildArray();
 console.log(randItems)
 
-
 // Build deck
 let deck = document.getElementsByTagName("section")[0];
 let html = ""
 for (let i=0; i<items.length*2; i++) html+=
     `
     <div class="scene col-3 col-sm-3 col-lg-2 my-2 cardHeight">
-    <div class="card border-primary h-100">
-        <div class="face rounded-lg front"></div>
-        <div id="card${i}" class="face rounded-lg back" style="background-color:${items[randItems[i]]};"></div>
+    <div id="${i}" class="card border-primary h-100">
+        <div class="face front"></div>
+        <div class="face back" style="background-color:${items[randItems[i]]};"></div>
     </div>
     </div>
     `;
 deck.innerHTML = html;
 
-// Joueur clic -> carte se retourne
-// clic deuxième carte se retourne puis les deux cartes masquées
-// jeux terminé toutes les cartes retrournée
+/********************************************************************************/
+//  game handler
+//
 
+// Class definition
+class Card {
+    constructor(id, color) {
+        this.status = "hidden";
+        this.id = id;
+        this.color = color;
+    }
+}
 
-
-
-
-//let previousCard = false;
-
+// Global variables declaration
 let cards = document.getElementsByClassName("card");
+let cardArray = new Array;
+let previousCard = new Card;
+let lastId = null;
+
 
 for (let card of cards){
+
+    let cardStyle = window.getComputedStyle(card.childNodes[3],null);
+    cardArray.push(new Card(
+        card.childNodes[3].id,
+        cardStyle.getPropertyValue("background-color")
+        ));
+
     card.addEventListener( "click", function() {
-        console.log(card.classList.contains("is_locked"))
-        if (!card.classList.contains("is_locked")) {
-                alert("lock");
 
+        // carte masquée ?
+        if (cardArray[card.id].status === "hidden"){
+            card.classList.toggle("is-flipped");
+            cardArray[card.id].status = "showed";
 
-             console.log(card.childNodes[3]);
-             cs = window.getComputedStyle(card.childNodes[3],null);
-             console.log(cs.getPropertyValue("background-color"));
+            // carte precedente existe?
+            if (lastId !== null) {
 
+                // même couleur?
+                if (cardArray[lastId].color === cardArray[card.id].color) {
 
-            card.classList.add("is_locked");
+                    cardArray[lastId].status = "paired";
+                    cardArray[card.id].status = "paired";
+                    lastId = null;
+
+                } else {
+
+                    let previous = document.getElementById(lastId);
+                    previous.classList.toggle("is-flipped");
+                    cardArray[lastId].status = "hidden";
+                    lastId = card.id;
+                }
+
+            } else {
+                lastId = card.id;
+            }
         }
-
-        let status = card.classList.toggle("is-flipped");
-        //console.log(status);
-
-        // console.log(card.style.background);
     });    
 }
