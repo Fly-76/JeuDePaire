@@ -2,6 +2,10 @@
 // Define possible choices
 let items = ["red", "yellow", "green", "pink", "violet", "brown"];
 
+/********************************************************************************/
+//  build the html
+//
+
 // Randomize data order of the given array
 function randomize(array) {
     let i, j, swap;
@@ -25,7 +29,7 @@ function buildArray() {
 let randItems = buildArray();
 console.log(randItems)
 
-// Build deck
+// Build html deck
 let deck = document.getElementsByTagName("section")[0];
 let html = ""
 for (let i=0; i<items.length*2; i++) html+=
@@ -37,6 +41,12 @@ for (let i=0; i<items.length*2; i++) html+=
     </div>
     </div>
     `;
+    html+= 
+    `
+    <div class="offset-2 col-8 mb-3">
+        <button class="btn btn-primary btn-block funnyFont" type="button" onclick="btnClick()">Jouer</button>
+    </div>
+    `;
 deck.innerHTML = html;
 
 /********************************************************************************/
@@ -45,6 +55,7 @@ deck.innerHTML = html;
 
 // Constant definition
 const HIDE_TIME = 1000;           // sleep time used before hiding cards
+const GAME_TIME = 60000;
 
 // Class definition
 class Card {
@@ -59,6 +70,7 @@ class Card {
 let cards = document.getElementsByClassName("card");
 let cardArray = new Array;
 let lastId = null;
+let started = false;
 
 // Disable click on the whole page
 function disableClick() {
@@ -105,28 +117,31 @@ for (let card of cards){
         ));
 
     card.addEventListener( "click", function() {
+        if(started) {
 
-        // carte masquée ?
-        if (cardArray[card.id].status === "hidden"){
-            card.classList.toggle("is-flipped");
-            cardArray[card.id].status = "showed";
+            // carte masquée ?
+            if (cardArray[card.id].status === "hidden"){
+                card.classList.toggle("is-flipped");
+                cardArray[card.id].status = "showed";
 
-            // carte precedente existe?
-            if (lastId !== null) {
-
-                // même couleur?
-                if (cardArray[lastId].color === cardArray[card.id].color) {
-                    // cardArray[lastId].status = "paired";
-                    // cardArray[card.id].status = "paired";
-                    pairedCard(card.id, lastId);
-
-                } else { // retarder l'occultaion des cartes
-                    maskCard(card.id, lastId);
+                // carte precedente existe?
+                if (lastId !== null) {
+                    // même couleur?
+                    if (cardArray[lastId].color === cardArray[card.id].color) {
+                        pairedCard(card.id, lastId);
+                    } else { // retarder l'occultaion des cartes
+                        maskCard(card.id, lastId);
+                    }
+                    lastId = null;
+                } else {
+                    lastId = card.id;
                 }
-                lastId = null;
-            } else {
-                lastId = card.id;
             }
         }
     });    
+}
+
+function btnClick() {
+    started = !started;
+    alert("click");
 }
