@@ -43,6 +43,9 @@ deck.innerHTML = html;
 //  game handler
 //
 
+// Constant definition
+const HIDE_TIME = 1000;           // sleep time used before hiding cards
+
 // Class definition
 class Card {
     constructor(id, color) {
@@ -55,9 +58,43 @@ class Card {
 // Global variables declaration
 let cards = document.getElementsByClassName("card");
 let cardArray = new Array;
-let previousCard = new Card;
 let lastId = null;
 
+// Disable click on the whole page
+function disableClick() {
+    let body = document.getElementsByTagName("body")[0];
+    body.setAttribute("style", "pointer-events: none;");
+}
+
+// Enable click on the whole page
+function enableClick() {
+    let body = document.getElementsByTagName("body")[0];
+    body.setAttribute("style", "pointer-events: auto;");
+}
+
+// Hide a card
+function hideCard(id) {
+    let card2Hide = document.getElementById(id);
+    card2Hide.classList.toggle("is-flipped");
+    cardArray[id].status = "hidden";
+}
+
+// Use time out before hiding two cards
+function maskCard(id1, id2) {
+    disableClick();
+    setTimeout(function(){ 
+        hideCard(id1);
+        hideCard(id2);
+        // lastId = null;
+        enableClick();
+    }, HIDE_TIME);
+}
+
+// mark a paired card
+function pairedCard(id1, id2) {
+    cardArray[id1].status = "paired";
+    cardArray[id2].status = "paired";
+}
 
 for (let card of cards){
 
@@ -79,19 +116,14 @@ for (let card of cards){
 
                 // même couleur?
                 if (cardArray[lastId].color === cardArray[card.id].color) {
+                    // cardArray[lastId].status = "paired";
+                    // cardArray[card.id].status = "paired";
+                    pairedCard(card.id, lastId);
 
-                    cardArray[lastId].status = "paired";
-                    cardArray[card.id].status = "paired";
-                    lastId = null;
-
-                } else {
-
-                    let previous = document.getElementById(lastId);
-                    previous.classList.toggle("is-flipped");
-                    cardArray[lastId].status = "hidden";
-                    lastId = card.id;
+                } else { // retarder l'occultaion des cartes
+                    maskCard(card.id, lastId);
                 }
-
+                lastId = null;
             } else {
                 lastId = card.id;
             }
