@@ -25,9 +25,7 @@ function buildArray() {
     randomize(data);
     return data;
 }
-
 let randItems = buildArray();
-console.log(randItems)
 
 // Build html deck
 let deck = document.getElementsByTagName("section")[0];
@@ -44,7 +42,7 @@ for (let i=0; i<items.length*2; i++) html+=
     html+= 
     `
     <div class="offset-2 col-8 mb-3">
-        <button class="btn btn-primary btn-block funnyFont" type="button" onclick="btnClick()">Jouer</button>
+        <button id="start" class="btn btn-primary btn-block funnyFont" type="button" onclick="btnClick()">Jouer</button>
     </div>
     `;
 deck.innerHTML = html;
@@ -54,8 +52,9 @@ deck.innerHTML = html;
 //
 
 // Constant definition
-const HIDE_TIME = 1000;           // sleep time used before hiding cards
-const GAME_TIME = 60000;
+const HIDE_TIME = 1000;             // sleep time used before hiding cards (ms)
+const GAME_TIME = 60;               // turn time (ms)
+const COUNT_TIME = 1000;            // basic counter time 1s
 
 // Class definition
 class Card {
@@ -112,7 +111,7 @@ for (let card of cards){
 
     let cardStyle = window.getComputedStyle(card.childNodes[3],null);
     cardArray.push(new Card(
-        card.childNodes[3].id,
+        card.id,
         cardStyle.getPropertyValue("background-color")
         ));
 
@@ -141,7 +140,58 @@ for (let card of cards){
     });    
 }
 
+// Game timeout
+let start = document.getElementById("start");
+let timerTag = document.querySelector("header p");
+let timer = null;
+let time = 0;
+
+// display time
+function displayTime(time2display) {
+    let timeLeft = time2display.toString();
+    if (timeLeft.length<2) timeLeft = "0" + timeLeft;
+    timerTag.innerText = `temps restant : ${timeLeft}`
+}
+
+// time handler
+function gameTimer() {
+    time--;
+    displayTime(time);
+
+    let win = true;
+    for (let card of cardArray) if (card.status !== "paired") win = false;
+
+    if (time<=0 || win) {
+        clearInterval(timer);
+
+        if (win) alert("GAGNER");
+        else alert("PERDU")
+
+        start.disabled = false;
+        for (let card of cardArray) if (card.status !== "hidden") hideCard(card.id);
+
+        randItems = buildArray();
+        let cardsTag = document.getElementsByClassName("face back");
+        for (let i=0; i<cardsTag.length; i++) {
+            let color = items[randItems[i]];
+            cardArray[i].color = color;
+            cardsTag[i].style.setProperty('background-color', color);
+        }
+        start.disabled = false;
+        started = !started;
+    }
+}
+
+// Start a new game
 function btnClick() {
-    started = !started;
-    alert("click");
+    
+    start.disabled = true;
+
+    time = GAME_TIME;
+    displayTime(time);
+
+    if(!started) {
+        started = !started;
+        timer = setInterval(gameTimer, COUNT_TIME);
+    }
 }
